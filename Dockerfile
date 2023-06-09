@@ -19,7 +19,7 @@ RUN apt-get update \
     && apt-get update \
     && apt-get install -y redis \
     && mkdir -p /etc/redis /var/redis \
-    && pip install --upgrade pip
+    && pip install --upgrade pip --proxy $HTTPS_PROXY
 
 # Add redis config
 COPY ./config/redis.conf /etc/redis/redis.conf
@@ -59,7 +59,7 @@ COPY --from=frontend_builder /usr/src/app/web/build /usr/src/app/api/static/
 COPY ./api /usr/src/app/api
 COPY --chmod=0755 scripts/deploy.sh /usr/src/app/deploy.sh
 
-RUN pip install --no-cache-dir ./api
+RUN pip install --no-cache-dir ./api --proxy $HTTPS_PROXY
 
 EXPOSE 8008
 CMD ./deploy.sh
