@@ -8,7 +8,9 @@ WORKDIR /usr/src/app
 # Base image for runtime
 FROM python:3.11-slim as base
 
-ENV TZ=Etc/UTC
+ENV TZ=Europe/Moscow
+ENV HTTPS_PROXY=
+ENV HTTP_PROXY=
 WORKDIR /usr/src/app
 
 # Install Redis
