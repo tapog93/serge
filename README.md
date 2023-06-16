@@ -1,109 +1,148 @@
 # Serge - LLaMA made easy 🦙
 
-![License](https://img.shields.io/github/license/nsarrazin/serge)
+![License](https://img.shields.io/github/license/serge-chat/serge)
 [![Discord](https://img.shields.io/discord/1088427963801948201?label=Discord)](https://discord.gg/62Hc6FEYQH)
 
-A chat interface based on [llama.cpp](https://github.com/ggerganov/llama.cpp) for running Alpaca models. Entirely self-hosted, no API keys needed. Fits on 4GB of RAM and runs on the CPU.
+Serge is a chat interface crafted with [llama.cpp](https://github.com/ggerganov/llama.cpp) for running Alpaca models. No API keys, entirely self-hosted!
 
-- **SvelteKit** frontend
-- **Redis** for storing chat history & parameters
-- **FastAPI + langchain** for the API, wrapping calls to [llama.cpp](https://github.com/ggerganov/llama.cpp) using the [python bindings](https://github.com/abetlen/llama-cpp-python)
+- 🌐 **SvelteKit** frontend
+- 💾 **Redis** for storing chat history & parameters
+- ⚙️ **FastAPI + LangChain** for the API, wrapping calls to [llama.cpp](https://github.com/ggerganov/llama.cpp) using the [python bindings](https://github.com/abetlen/llama-cpp-python)
+
+🎥 Demo:
 
 [demo.webm](https://user-images.githubusercontent.com/25119303/226897188-914a6662-8c26-472c-96bd-f51fc020abf6.webm)
 
-## Getting started
+## ⚡️ Quick start
 
-Setting up Serge is very easy. Starting it up can be done in a single command:
-
+🐳 Docker:
+```bash
+docker run -d \
+    --name serge \
+    -v weights:/usr/src/app/weights \
+    -v datadb:/data/db/ \
+    -p 8008:8008 \
+    ghcr.io/serge-chat/serge:latest
 ```
-docker run -d -v weights:/usr/src/app/weights -v datadb:/data/db/ -p 8008:8008 ghcr.io/nsarrazin/serge:latest
+
+🐙 Docker Compose:
+```yaml
+services:
+  serge:
+    image: ghcr.io/serge-chat/serge:latest
+    container_name: serge
+    restart: unless-stopped
+    ports:
+      - 8008:8008
+    volumes:
+      - weights:/usr/src/app/weights
+      - datadb:/data/db/
+
+volumes:
+  weights:
+  datadb:
 ```
 
-Then just go to http://localhost:8008/ and you're good to go!
+Then, just visit http://localhost:8008/, You can find the API documentation at http://localhost:8008/api/docs
 
-The API documentation can be found at http://localhost:8008/api/docs
+## 🖥️ Windows Setup
 
-#### Windows
+Ensure you have Docker Desktop installed, WSL2 configured, and enough free RAM to run models. 
 
-Make sure you have docker desktop installed, WSL2 configured and enough free RAM to run models. (see below)
+## ☁️ Kubernetes & Docker Compose Setup
 
-#### Kubernetes & docker compose
+Instructions for setting up Serge on Kubernetes can be found in the [wiki](https://github.com/serge-chat/serge/wiki/Integrating-Serge-in-your-orchestration#kubernetes-example).
 
-Setting up Serge on Kubernetes or docker compose can be found in the wiki: https://github.com/nsarrazin/serge/wiki/Integrating-Serge-in-your-orchestration#kubernetes-example
+## 🧠 Supported Models
 
-## Models
+We currently support the following models:
 
-Currently the following models are supported:
+- Airoboros 🎈
+  - Airoboros-7B
+  - Airoboros-13B
+  - Airoboros-30B
+- Alpaca 🦙
+  - Alpaca-LoRA-65B
+  - GPT4-Alpaca-LoRA-30B
+- Chronos 🌑
+  - Chronos-13B
+  - Chronos-33B
+  - Chronos-Hermes-13B
+- GPT4All 🌍
+  - GPT4All-13B
+- Guanaco 🦙
+  - Guanaco-7B
+  - Guanaco-13B
+  - Guanaco-33B
+  - Guanaco-65B
+- Koala 🐨
+  - Koala-7B
+  - Koala-13B
+- Llama 🦙
+  - FinLlama-33B
+  - Llama-Supercot-30B
+- Lazarus 💀
+  - Lazarus-30B
+- Nous 🧠
+  - Nous-Hermes-13B
+- OpenAssistant 🎙️
+  - OpenAssistant-30B
+- Samantha 👩
+  - Samantha-7B
+  - Samantha-13B
+  - Samantha-33B
+- Tulu 🎚
+  - Tulu-7B
+  - Tulu-13B
+  - Tulu-30B
+- Vicuna 🦙
+  - Stable-Vicuna-13B
+  - Vicuna-CoT-7B
+  - Vicuna-CoT-13B
+  - Vicuna-v1.1-7B
+  - Vicuna-v1.1-13B
+  - VicUnlocked-30B
+  - VicUnlocked-65B
+- Wizard 🧙
+  - Wizard-Mega-13B
+  - Wizard-Vicuna-Uncensored-7B
+  - Wizard-Vicuna-Uncensored-13B
+  - Wizard-Vicuna-Uncensored-30B
+  - WizardLM-30B
+  - WizardLM-Uncensored-7B
+  - WizardLM-Uncensored-13B
+  - WizardLM-Uncensored-30B
 
-- GPT4-Alpaca-LoRA-30B
-- Alpaca-LoRA-65B
-- OpenAssistant-30B
-- GPT4All-13B
-- Vicuna-v1.1-7B
-- Vicuna-v1.1-13B
-- Vicuna-CoT-7B
-- Vicuna-CoT-13B
-- Stable-Vicuna-13B
-- Guanaco-7B
-- Guanaco-13B
-- Guanaco-33B
-- Guanaco-65B
-- Wizard-Vicuna-Uncensored-7B
-- Wizard-Vicuna-Uncensored-13B
-- Wizard-Vicuna-Uncensored-30B
-- WizardLM-30B
-- WizardLM-Uncensored-7B
-- WizardLM-Uncensored-13B
-- WizardLM-Uncensored-30B
-- Wizard-Mega-13B
-- Lazarus-30B
-- Nous-Hermes-13B
-- Samantha-7B
-- Samantha-13B
-- Samantha-33B
-- Koala-7B
-- Koala-13B
+Additional weights can be added to the `serge_weights` volume using `docker cp`:
 
-
-If you have existing weights from another project you can add them to the `serge_weights` volume using `docker cp`.
-
-### :warning: A note on _memory usage_
-
-LLaMA will just crash if you don't have enough available memory for your model.
-
-- 7B requires about 4.5GB of free RAM
-- 13B requires about 12GB free
-- 30B requires about 20GB free
-
-
-## Support
-
-Feel free to join the discord if you need help with the setup: https://discord.gg/62Hc6FEYQH
-
-## Contributing
-
-Serge is always open for contributions! If you catch a bug or have a feature idea, feel free to open an issue or a PR.
-
-If you want to run Serge in development mode (with hot-module reloading for svelte & autoreload for FastAPI) you can do so like this:
-
+```bash
+docker cp ./my_weight.bin serge:/usr/src/app/weights/
 ```
-git clone https://github.com/nsarrazin/serge.git
+
+## ⚠️ Memory Usage
+
+LLaMA will crash if you don't have enough available memory for the model:
+
+| Model    | RAM Required |
+|----------|-----------------|
+| 7B       | 4.5GB           |
+| 7B-q6_K  | 8.03GB          |
+| 13B      | 12GB            |
+| 13B-q6_K | 13.18GB         |
+| 30B      | 20GB            |
+| 30B-q6_K | 29.19GB         |
+
+## 💬 Support
+
+Need help? Join our [Discord](https://discord.gg/62Hc6FEYQH)
+
+## 🤝 Contributing
+
+If you discover a bug or have a feature idea, feel free to open an issue or PR.
+
+To run Serge in development mode:
+
+```bash
+git clone https://github.com/serge-chat/serge.git
 DOCKER_BUILDKIT=1 docker compose -f docker-compose.dev.yml up -d --build
 ```
-
-You can test the production image with
-
-```
-DOCKER_BUILDKIT=1 docker compose up -d --build
-```
-
-## What's next
-
-- [x] Front-end to interface with the API
-- [x] Pass model parameters when creating a chat
-- [x] Manager for model files
-- [ ] Support for other models
-- [ ] LangChain integration
-- [ ] User profiles & authentication
-
-And a lot more!
